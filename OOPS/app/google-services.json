@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "681484478587",
+    "project_id": "oops-49554",
+    "storage_bucket": "oops-49554.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681484478587:android:f088b56b8f2c4756491ade",
+        "android_client_info": {
+          "package_name": "com.example.oopsmelis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681484478587-9padd91tsmrlumi217nec0s1huh07n4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcp2uC0DPWD80kEyln20UcgYqpLNFwXGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681484478587-9padd91tsmrlumi217nec0s1huh07n4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
