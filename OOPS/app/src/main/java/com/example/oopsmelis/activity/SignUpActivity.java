@@ -1,16 +1,17 @@
-package com.example.oopsmelis;
+package com.example.oopsmelis.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckedTextView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.oopsmelis.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -22,6 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
     TextInputEditText emailEditText,passwordEditText;
     Button signUpButon;
     FirebaseAuth auth;
+    AppCompatCheckedTextView signInGecis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,18 @@ public class SignUpActivity extends AppCompatActivity {
         emailEditText=findViewById(R.id.emailEditText);
         passwordEditText=findViewById(R.id.passwordEditText);
         signUpButon=findViewById(R.id.signUpButon);
+        signInGecis=findViewById(R.id.signInGecis);
         auth=FirebaseAuth.getInstance();
+
+        signInGecis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(SignUpActivity.this, SignInActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
 
         signUpButon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // kayıt başarılıysa activity geçişi
                 if(task.isSuccessful()){
-                    Intent intent=new Intent(SignUpActivity.this,ButtomNavigationActivity.class);
+                    Intent intent=new Intent(SignUpActivity.this, ButtomNavigationActivity.class);
                     startActivity(intent);
                     finish();
 

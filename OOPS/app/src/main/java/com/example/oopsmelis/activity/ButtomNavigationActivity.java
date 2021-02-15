@@ -1,14 +1,13 @@
-package com.example.oopsmelis;
+package com.example.oopsmelis.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
+import com.example.oopsmelis.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -36,23 +35,8 @@ public class ButtomNavigationActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications,R.id.navigation_signOut)
                 .build();
-*/
 
 
-        navView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
-            @Override
-            public void onNavigationItemReselected(@NonNull MenuItem item) {
-                if(item.getItemId()==R.id.navigation_signOut){
-                    auth.signOut();
-                    Intent intent=new Intent(getApplicationContext(),SignUpActivity.class);
-                    startActivity(intent);
-                    finish(); // signup activity e geçtikten sonra main activity e  gelmeyi engellemek için
-
-                }
-
-
-            }
-        });
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -60,8 +44,32 @@ public class ButtomNavigationActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
 
-    }
 
+
+       // navView.setOnNavigationItemReselectedListener(navListener);
+
+    }
+    /*
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener=
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment=null;
+                    switch (item.getItemId()){
+                        case R.id.navigation_signOut:
+
+                            auth.signOut();
+                            Intent intent=new Intent(getApplicationContext(),SignUpActivity.class);
+                            startActivity(intent);
+                            finish(); // signup activity e geçtikten sonra main activity e  gelmeyi engellemek için
+                            break;
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_container,selectedFragment).commit();
+                    return true;
+                }
+            };
+
+     */
     public void tanimlamalar(){
         auth=FirebaseAuth.getInstance();
         user=auth.getCurrentUser();
@@ -72,7 +80,7 @@ public class ButtomNavigationActivity extends AppCompatActivity {
 
         if(user==null)  // kullanıcı yoksa
         {
-            Intent intent=new Intent(ButtomNavigationActivity.this,SignUpActivity.class);
+            Intent intent=new Intent(ButtomNavigationActivity.this, SignInActivity.class);
             startActivity(intent);
             finish(); // signup activity e geçtikten sonra main activity e  gelmeyi engellemek için
         }else
