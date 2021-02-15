@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OOPS">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_buttom_navigation"></activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ButtomNavigationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
