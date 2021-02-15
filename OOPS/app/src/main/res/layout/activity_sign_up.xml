@@ -89,6 +89,7 @@
                 android:backgroundTint="@color/purple_700"
                 android:layout_height="wrap_content"
                 android:text="SIGN UP"
+                android:padding="10dp"
                 android:textSize="18dp"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 />

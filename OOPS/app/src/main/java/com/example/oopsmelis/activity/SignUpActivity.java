@@ -17,6 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -24,6 +29,8 @@ public class SignUpActivity extends AppCompatActivity {
     Button signUpButon;
     FirebaseAuth auth;
     AppCompatCheckedTextView signInGecis;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +85,20 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // kayıt başarılıysa activity geçişi
                 if(task.isSuccessful()){
+
+                    // kullanıcı kayıtlarını veri tabanına kaydetme işlemleri
+                    firebaseDatabase=FirebaseDatabase.getInstance();
+                    // 1. child tablo ismi, 2. childkullanıcı uid
+                    reference=firebaseDatabase.getReference().child("Kullanicilar").child(auth.getUid());
+                    Map map=new HashMap();
+                    map.put("isim","null");
+                    map.put("resim","null");
+                    map.put("hakkinda","null");
+                    map.put("telefon","null");
+                   reference.setValue(map);
+
+                    Log.i("hatamap",""+map);
+
                     Intent intent=new Intent(SignUpActivity.this, ButtomNavigationActivity.class);
                     startActivity(intent);
                     finish();
