@@ -110,6 +110,7 @@ public class HomeUserAdapter extends RecyclerView.Adapter<HomeUserAdapter.ViewHo
 
                 ChangeFragment changeFragment=new ChangeFragment(context);
                 changeFragment.changeWithParemeter(new UserProfileFragment(),userKeysList.get(position));
+
             }
         });
 
