@@ -18,12 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.oopsmelis.R;
-import com.google.android.gms.tasks.OnCanceledListener;
+import com.example.oopsmelis.utilss.ProfileViewModel;
+import com.example.oopsmelis.utilss.RandomUserName;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -170,8 +168,8 @@ public class ProfileFragment extends Fragment {
             Log.i("resimm","" +filePath);
             //String filee=filePath.toString();
 
-            // resim dosyasına firebase e yükleme
-            StorageReference resimRef=storageReference.child("KullaniciResimleri").child("taner.jpg");
+            // resim dosyasına firebase e yükleme                                          // random isim üretme sınıfı
+            StorageReference resimRef=storageReference.child("KullaniciResimleri").child(RandomUserName.getSaltString()+".jpg");
             resimRef.putFile(filePath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {

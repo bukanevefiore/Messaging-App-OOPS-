@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:id="@+id/userHomeLinearLayout"
     android:orientation="vertical"
-    android:background="#F4E6B6"
-    android:layout_height="match_parent">
+
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
 

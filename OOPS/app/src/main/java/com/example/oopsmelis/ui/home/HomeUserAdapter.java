@@ -5,12 +5,25 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.oopsmelis.ChangeFragment;
 import com.example.oopsmelis.R;
+import com.example.oopsmelis.activity.ButtomNavigationActivity;
+import com.example.oopsmelis.users.UserProfileFragment;
+import com.example.oopsmelis.utilss.ProfileViewModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,12 +34,18 @@ public class HomeUserAdapter extends RecyclerView.Adapter<HomeUserAdapter.ViewHo
     List<String> userKeysList;
     Activity activity;
     Context context;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference reference;
+
+
 
     // constructor
     public HomeUserAdapter(List<String> userKeysList, Activity activity, Context context) {
         this.userKeysList = userKeysList;
         this.activity = activity;
         this.context = context;
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        reference=firebaseDatabase.getReference();
     }
 
 
@@ -45,14 +64,15 @@ public class HomeUserAdapter extends RecyclerView.Adapter<HomeUserAdapter.ViewHo
     // Vievholder iç class ımız (View leri tanımlama sınıfımız )
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView isim;
-        CircleImageView resim;
+        TextView usernameTextView;
+        CircleImageView userImage;
+        LinearLayout userHomeLinearLayout;
 
         ViewHolder(View itemView){
             super(itemView);
-            isim=itemView.findViewById(R.id.usernameTextView);
-            resim=itemView.findViewById(R.id.userImage);
-
+            usernameTextView=itemView.findViewById(R.id.usernameTextView);
+            userImage=itemView.findViewById(R.id.userImage);
+            userHomeLinearLayout=itemView.findViewById(R.id.userHomeLinearLayout);
 
         }
 
@@ -60,14 +80,45 @@ public class HomeUserAdapter extends RecyclerView.Adapter<HomeUserAdapter.ViewHo
 
     // view lere setlemeler yapılacak
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(final @NonNull ViewHolder holder, int position) {
+
+      //  holder.usernameTextView.setText(userKeysList.get(position).toString());
+
+        // veritabanından child mantığıyla kullanicilarin isimlerini alma(database e bağlanma)
+        reference.child("Kullanicilar").child(userKeysList.get(position).toString()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                ProfileViewModel kullanicilar=snapshot.getValue(ProfileViewModel.class);
+
+                     Picasso.get().load(kullanicilar.getResim()).into(holder.userImage);
+                     holder.usernameTextView.setText(kullanicilar.getIsim());
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // homefragment de kullanıcılardan birine tıkladığımızda kullanıcı ayrıntı bilgilere gitme
+        holder.userHomeLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ChangeFragment changeFragment=new ChangeFragment(context);
+                changeFragment.changeWithParemeter(new UserProfileFragment(),userKeysList.get(position));
+            }
+        });
 
     }
 
     // adapter oluşturulacak olan listenin size
     @Override
     public int getItemCount() {
-        return 0;
+        return userKeysList.size();
     }
 
 
