@@ -74,7 +74,7 @@
                     android:id="@+id/hakkimda"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
+                    android:enabled="true"
                     android:textColor="#FFC107"
                     android:backgroundTint="@android:color/transparent" />
 
@@ -95,7 +95,7 @@
                     android:id="@+id/tel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
+                    android:enabled="true"
                     android:textColor="#FFC107"
                     android:backgroundTint="@android:color/transparent" />
 
