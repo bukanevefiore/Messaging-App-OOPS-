@@ -37,7 +37,7 @@ public class ButtomNavigationActivity extends AppCompatActivity {
         kontrol();
 
         changeFragment=new ChangeFragment(ButtomNavigationActivity.this);
-
+        changeFragment.change(new HomeFragment());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -76,6 +76,12 @@ public class ButtomNavigationActivity extends AppCompatActivity {
                             return true;
                         case R.id.navigation_notifications:
                             changeFragment.change(new ProfileFragment());
+                            return true;
+                        case R.id.navigation_signOut:
+                            auth.signOut();
+                            Intent intent=new Intent(getApplicationContext(),SignUpActivity.class);
+                            startActivity(intent);
+                            finish(); // signup activity e geçtikten sonra main activity e  gelmeyi engellemek için
                             return true;
 
                     }
