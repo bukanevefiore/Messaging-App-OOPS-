@@ -9,14 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oopsmelis.ChangeFragment;
 import com.example.oopsmelis.R;
-import com.example.oopsmelis.activity.ButtomNavigationActivity;
-import com.example.oopsmelis.users.UserProfileFragment;
+import com.example.oopsmelis.users.OtherProfileFragment;
 import com.example.oopsmelis.utilss.ProfileViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -109,7 +106,7 @@ public class HomeUserAdapter extends RecyclerView.Adapter<HomeUserAdapter.ViewHo
             public void onClick(View v) {
 
                 ChangeFragment changeFragment=new ChangeFragment(context);
-                changeFragment.changeWithParemeter(new UserProfileFragment(),userKeysList.get(position));
+                changeFragment.changeWithParemeter(new OtherProfileFragment(),userKeysList.get(position));
 
             }
         });
