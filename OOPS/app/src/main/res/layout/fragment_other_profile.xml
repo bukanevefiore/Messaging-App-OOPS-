@@ -159,8 +159,8 @@
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:id="@+id/userProfilArkadasImage"
-                    android:background="@drawable/takip_no">
+                    android:id="@+id/userProfilArkadasImage">
+                 <!--   android:background="@drawable/takip_offf"-->
                 </ImageView>
 
                 <ImageView
@@ -174,7 +174,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:id="@+id/userProfilTakipImage"
-                    android:background="@drawable/takip_okey">
+                    android:background="@drawable/arkadas_ekle_off">
 
                 </ImageView>
             </LinearLayout>

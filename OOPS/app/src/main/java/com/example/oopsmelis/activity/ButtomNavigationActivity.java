@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.example.oopsmelis.ChangeFragment;
 import com.example.oopsmelis.R;
-import com.example.oopsmelis.ui.dashboard.DashboardFragment;
+import com.example.oopsmelis.ui.notifications.NotificationsFragment;
 import com.example.oopsmelis.ui.home.HomeFragment;
 import com.example.oopsmelis.ui.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -15,11 +15,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 public class ButtomNavigationActivity extends AppCompatActivity {
 
@@ -72,7 +67,7 @@ public class ButtomNavigationActivity extends AppCompatActivity {
                             changeFragment.change(new HomeFragment());
                             return true;
                         case R.id.navigation_dashboard:
-                            changeFragment.change(new DashboardFragment());
+                            changeFragment.change(new NotificationsFragment());
                             return true;
                         case R.id.navigation_notifications:
                             changeFragment.change(new ProfileFragment());

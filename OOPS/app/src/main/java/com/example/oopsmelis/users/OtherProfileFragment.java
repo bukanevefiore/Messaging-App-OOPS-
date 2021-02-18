@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.oopsmelis.R;
 import com.example.oopsmelis.utilss.ProfileViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,9 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,12 +40,13 @@ public class OtherProfileFragment extends Fragment {
     CircleImageView userProfileimage;
     FirebaseAuth auth;
     FirebaseUser user;
+    String kontrol;  // arkadaşlık istek gönderim kontrolü
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view=  inflater.inflate(R.layout.fragment_user_profile, container, false);
+        view=  inflater.inflate(R.layout.fragment_other_profile, container, false);
 
         tanimlamalar();
         action();
@@ -77,6 +76,29 @@ public class OtherProfileFragment extends Fragment {
         userProfilArkadasImage=view.findViewById(R.id.userProfilArkadasImage);
         userProfileimage=view.findViewById(R.id.userProfileimage);
         userProfilArkadasEkleTextView=view.findViewById(R.id.userProfilArkadasEkleTextView);
+
+
+        // otherid ye ait kişide(profiline girdiğimiz kişide ) bize ait arkadaşlık isteği var mı kontrolü
+        reference_Arkadaslik.child(otherId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.hasChild(userId)){                    // profiline girdiğimiz kişide db de bizim userid miz varmı kontrolu
+                    // veri tabnındaki tip değerini kontrol değişkenine atadık
+                    kontrol=snapshot.child(userId).child("tip").getValue().toString();
+                    userProfilArkadasImage.setImageResource(R.drawable.takip_okey); // istek var ise resmi değiştir(koyu yap)
+                }else{
+                    userProfilArkadasImage.setImageResource(R.drawable.takip_offf);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
 
     }
 
@@ -108,13 +130,20 @@ public class OtherProfileFragment extends Fragment {
         userProfilArkadasImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                arkadasEkle(otherId,userId);
-            }
+
+/*                if(!kontrol.equals(" ")){
+                    arkadaslikIptalEt(otherId,userId);
+                }else {
+
+  */                  arkadasEkle(otherId, userId);
+               }
+
+    //        }
         });
 
     }
 
-    public void arkadasEkle(String otherId,String userId){
+    public void arkadasEkle(final String otherId,final String userId){
 
         // otherid kişisine istek gönderme
         reference_Arkadaslik.child(userId).child(otherId).child("tip").setValue("gonderdi")
@@ -124,13 +153,15 @@ public class OtherProfileFragment extends Fragment {
 
                 if(task.isSuccessful()){
                          // otherid kişisi tarafından arkadaşlık isteğinin alınması
-                    reference_Arkadaslik.child(otherId).child(userId).child("tip").setValue("aldı")
+                    reference_Arkadaslik.child(otherId).child(userId).child("tip").setValue("aldi")
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
 
+                                        kontrol="aldi";
                                         Toast.makeText(getContext(), "Friend request sent", Toast.LENGTH_LONG).show();
+                                        userProfilArkadasImage.setImageResource(R.drawable.takip_okey); // istek var ise resmi değiştir(koyu yap)
 
                                     }   else{
                                         Toast.makeText(getContext(), "There is a problem", Toast.LENGTH_LONG).show();
@@ -146,4 +177,27 @@ public class OtherProfileFragment extends Fragment {
         });
 
     }
+
+    // arkadaşlık isteğini geri çekme ve veri tabanından silme işlemi
+    public void arkadaslikIptalEt(final String otherId,final String userId){
+
+        // arkadaş tablosunda otherid altındaki userid kaydını silme
+        reference_Arkadaslik.child(otherId).child(userId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+               // arkadaş tablosunda userid altındaki otherid kaydını silme
+                reference_Arkadaslik.child(userId).child(otherId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        kontrol="";
+                        userProfilArkadasImage.setImageResource(R.drawable.takip_offf);
+                        Toast.makeText(getContext(), "Friend request canceled", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+            }
+        });
+
+    }
+
 }
