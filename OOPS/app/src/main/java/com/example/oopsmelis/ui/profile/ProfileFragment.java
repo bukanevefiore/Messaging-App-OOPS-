@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +20,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.oopsmelis.ChangeFragment;
 import com.example.oopsmelis.R;
+import com.example.oopsmelis.users.OtherProfileFragment;
 import com.example.oopsmelis.utilss.ProfileViewModel;
 import com.example.oopsmelis.utilss.RandomUserName;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,6 +49,7 @@ public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
     View root;
+    ImageView takipciImage;
     private TextView textView;
     private TextInputEditText namee,hakkimda,tel;
     Button bilgiGuncelle;
@@ -135,6 +139,15 @@ public class ProfileFragment extends Fragment {
         firebaseStorage=FirebaseStorage.getInstance();
         storageReference=firebaseStorage.getReference();
         profile_image=root.findViewById(R.id.profile_image);
+        takipciImage=root.findViewById(R.id.takipciImage);
+
+        takipciImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeFragment changeFragment=new ChangeFragment(getContext());
+                changeFragment.change(new ArkadaslarFragment());
+            }
+        });
 
         // profil resmini değiştirme
         profile_image.setOnClickListener(new View.OnClickListener() {
@@ -243,17 +256,17 @@ public class ProfileFragment extends Fragment {
                 hakkimda.setText(kullanicilar.getHakkinda());
                 tel.setText(kullanicilar.getTelefon());
                 imageUrl=kullanicilar.getResim();
-               // if(!kullanicilar.getResim().equals("null")){  // resim kontrolü
+                if(kullanicilar.getResim() != "null"){  // resim kontrolü
 
                 try {
                     Picasso.get().load(kullanicilar.getResim()).into(profile_image);
-                    Log.d("resimcek","hata varrrrr");
+                   // Log.d("resimcek","hata varrrrr");
 
                 }catch (Exception e){
                     Log.d("resimcek",e.getMessage());
                 }
 
-               // }
+                }
             }
 
             @Override

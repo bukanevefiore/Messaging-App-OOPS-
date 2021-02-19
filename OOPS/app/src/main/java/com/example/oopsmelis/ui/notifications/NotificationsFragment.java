@@ -5,18 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oopsmelis.R;
-import com.example.oopsmelis.utilss.FriendRequestAdapter;
+import com.example.oopsmelis.users.FriendRequestAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -40,6 +38,7 @@ public class NotificationsFragment extends Fragment {
     List<String> friend_req_key_list;
     RecyclerView friendRequestListRecyclerViev;
     FriendRequestAdapter adapter;
+    String kontrol;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -73,9 +72,15 @@ public class NotificationsFragment extends Fragment {
         reference.child(userId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.i("istekler",snapshot.getKey());
-                friend_req_key_list.add(snapshot.getKey());
-                adapter.notifyDataSetChanged();
+
+
+                    Log.i("istekler", snapshot.getKey());
+                    kontrol = snapshot.child("tip").getValue().toString();
+                    if (kontrol.equals("aldi")) {
+                        friend_req_key_list.add(snapshot.getKey());
+                        adapter.notifyDataSetChanged();
+                    }
+
             }
 
             @Override

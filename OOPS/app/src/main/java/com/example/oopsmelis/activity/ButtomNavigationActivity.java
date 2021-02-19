@@ -66,10 +66,12 @@ public class ButtomNavigationActivity extends AppCompatActivity {
                         case R.id.navigation_home:
                             changeFragment.change(new HomeFragment());
                             return true;
+
                         case R.id.navigation_dashboard:
                             changeFragment.change(new NotificationsFragment());
                             return true;
-                        case R.id.navigation_notifications:
+
+                        case R.id.navigation_profile:
                             changeFragment.change(new ProfileFragment());
                             return true;
                         case R.id.navigation_signOut:

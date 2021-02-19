@@ -1,4 +1,4 @@
-package com.example.oopsmelis.utilss;
+package com.example.oopsmelis.users;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,9 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.oopsmelis.ChangeFragment;
 import com.example.oopsmelis.R;
-import com.example.oopsmelis.users.OtherProfileFragment;
+import com.example.oopsmelis.utilss.ProfileViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

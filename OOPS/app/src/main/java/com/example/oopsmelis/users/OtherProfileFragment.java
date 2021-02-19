@@ -3,8 +3,10 @@ package com.example.oopsmelis.users;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +16,22 @@ import android.widget.Toast;
 
 import com.example.oopsmelis.R;
 import com.example.oopsmelis.utilss.ProfileViewModel;
+import com.example.oopsmelis.utilss.ShowToastMessage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,14 +41,16 @@ public class OtherProfileFragment extends Fragment {
 
     View view;
     String otherId,userId;
-    TextView userProfilTelephone,userProfilNameText,userProfilAboutMe,userProfilTakipText,userProfilTakipciText,userProfilArkadasEkleTextView;
-    ImageView userProfilMesajImage,userProfilTakipImage,userProfilArkadasImage;
+    TextView userProfilTelephone,userProfilNameText,userProfilAboutMe,userProfilTakipText,userProfilTakipciText,
+            userProfilArkadasEkleTextView,begenisayi;
+    ImageView userProfilMesajImage,userProfilBegenImage,userProfilArkadasImage;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference reference,reference_Arkadaslik;
     CircleImageView userProfileimage;
     FirebaseAuth auth;
     FirebaseUser user;
-    String kontrol;  // arkadaşlık istek gönderim kontrolü
+    String kontrol="", begeniKontrol="";  // arkadaşlık istek gönderim kontrolü
+    ShowToastMessage showToastMessage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +60,8 @@ public class OtherProfileFragment extends Fragment {
 
         tanimlamalar();
         action();
+        getBegeniTextler();
+        getArkadasTextler();
 
         return view;
 
@@ -72,12 +84,15 @@ public class OtherProfileFragment extends Fragment {
         userProfilTakipText=view.findViewById(R.id.userProfilTakipText);
         userProfilTakipciText=view.findViewById(R.id.userProfilTakipciText);
         userProfilMesajImage=view.findViewById(R.id.userProfilMesajImage);
-        userProfilTakipImage=view.findViewById(R.id.userProfilTakipImage);
+        userProfilBegenImage=view.findViewById(R.id.userProfilBegenImage);
         userProfilArkadasImage=view.findViewById(R.id.userProfilArkadasImage);
         userProfileimage=view.findViewById(R.id.userProfileimage);
         userProfilArkadasEkleTextView=view.findViewById(R.id.userProfilArkadasEkleTextView);
+        showToastMessage=new ShowToastMessage(getContext());
+        begenisayi=view.findViewById(R.id.begenisayi);
 
 
+                                         //    TÜM KONTROLLER
         // otherid ye ait kişide(profiline girdiğimiz kişide ) bize ait arkadaşlık isteği var mı kontrolü
         reference_Arkadaslik.child(otherId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -85,7 +100,7 @@ public class OtherProfileFragment extends Fragment {
 
                 if(snapshot.hasChild(userId)){                    // profiline girdiğimiz kişide db de bizim userid miz varmı kontrolu
                     // veri tabnındaki tip değerini kontrol değişkenine atadık
-                    kontrol=snapshot.child(userId).child("tip").getValue().toString();
+                    kontrol="istek";
                     userProfilArkadasImage.setImageResource(R.drawable.takip_okey); // istek var ise resmi değiştir(koyu yap)
                 }else{
                     userProfilArkadasImage.setImageResource(R.drawable.takip_offf);
@@ -99,6 +114,39 @@ public class OtherProfileFragment extends Fragment {
         });
 
 
+        reference.child("Arkadaslar").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.hasChild(otherId)) {
+                    kontrol="arkadas";
+                    userProfilArkadasImage.setImageResource(R.drawable.arkadas_sil);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        reference.child("Begeniler").child(otherId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.hasChild(userId)) {
+                    begeniKontrol = "begendi";
+                    userProfilBegenImage.setImageResource(R.drawable.begen2);
+                }else{
+                    userProfilBegenImage.setImageResource(R.drawable.begen1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
@@ -115,8 +163,8 @@ public class OtherProfileFragment extends Fragment {
                 userProfilAboutMe.setText("About Me : "+kullanicilar.getHakkinda());
                 userProfilArkadasEkleTextView.setText(kullanicilar.getIsim());
 
-                if(!kullanicilar.getResim().equals("")) {
-                 //   Picasso.get().load(kullanicilar.getResim()).into(userProfileimage);
+                if(!kullanicilar.getResim().equals("null")) {
+                    Picasso.get().load(kullanicilar.getResim()).into(userProfileimage);
                 }
             }
 
@@ -131,16 +179,46 @@ public class OtherProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-/*                if(!kontrol.equals(" ")){
+                if(kontrol == "istek"){
                     arkadaslikIptalEt(otherId,userId);
-                }else {
+                }else if(kontrol == "arkadas"){
 
-  */                  arkadasEkle(otherId, userId);
+                    arkadasTablosundanCikar(otherId,userId);
+                }else  {
+
+                   arkadasEkle(otherId, userId);
                }
 
-    //        }
+           }
         });
 
+        userProfilBegenImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(begeniKontrol.equals("begendi")){
+                    begeniIptal(userId,otherId);
+                }else {
+
+                    begen(userId,otherId);
+                }
+            }
+        });
+
+    }
+
+    private void begeniIptal(String userId, String otherId) {
+
+        reference.child("Begeniler").child(otherId).child(userId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                userProfilBegenImage.setImageResource(R.drawable.begen1);
+                begeniKontrol="";
+                showToastMessage.showToast("Like canceled");
+                getBegeniTextler();
+            }
+        });
     }
 
     public void arkadasEkle(final String otherId,final String userId){
@@ -159,18 +237,21 @@ public class OtherProfileFragment extends Fragment {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
 
-                                        kontrol="aldi";
-                                        Toast.makeText(getContext(), "Friend request sent", Toast.LENGTH_LONG).show();
+                                        kontrol="istek";
+                                        showToastMessage.showToast("Friend request sent");  // toast mesajımız
                                         userProfilArkadasImage.setImageResource(R.drawable.takip_okey); // istek var ise resmi değiştir(koyu yap)
 
+
                                     }   else{
-                                        Toast.makeText(getContext(), "There is a problem", Toast.LENGTH_LONG).show();
+                                        showToastMessage.showToast("There is a problem");
+
                                     }
                                 }
                             });
 
                 }else{
-                    Toast.makeText(getContext(), "There is a problem", Toast.LENGTH_LONG).show();
+                    showToastMessage.showToast("There is a problem");
+
                 }
 
             }
@@ -181,7 +262,7 @@ public class OtherProfileFragment extends Fragment {
     // arkadaşlık isteğini geri çekme ve veri tabanından silme işlemi
     public void arkadaslikIptalEt(final String otherId,final String userId){
 
-        // arkadaş tablosunda otherid altındaki userid kaydını silme
+        // arkadaş istek tablosunda otherid altındaki userid kaydını silme
         reference_Arkadaslik.child(otherId).child(userId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -191,7 +272,7 @@ public class OtherProfileFragment extends Fragment {
                     public void onSuccess(Void aVoid) {
                         kontrol="";
                         userProfilArkadasImage.setImageResource(R.drawable.takip_offf);
-                        Toast.makeText(getContext(), "Friend request canceled", Toast.LENGTH_LONG).show();
+                        showToastMessage.showToast("Friend request canceled");
 
                     }
                 });
@@ -199,5 +280,75 @@ public class OtherProfileFragment extends Fragment {
         });
 
     }
+    public void arkadasTablosundanCikar(final String otherId,final String userId){
 
+
+        // arkadaş  tablosunda otherid altındaki userid kaydını silme
+        reference.child("Arkadaslar").child(otherId).child(userId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // arkadaş tablosunda userid altındaki otherid kaydını silme
+                reference.child("Arkadaslar").child(userId).child(otherId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        kontrol="";
+                        userProfilArkadasImage.setImageResource(R.drawable.takip_offf);
+                        showToastMessage.showToast("Unfriended !!");
+                        getArkadasTextler();
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void begen(String userId,String otherId){
+        reference.child("Begeniler").child(otherId).child(userId).child("tip").setValue("begendi").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                showToastMessage.showToast("Like the profile");
+                userProfilBegenImage.setImageResource(R.drawable.begen2);
+                begeniKontrol="begendi";
+                getBegeniTextler();
+            }
+        });
+    }
+
+    public void getBegeniTextler(){
+
+      //  List<String> begeniList=new ArrayList<>();
+
+        reference.child("Begeniler").child(otherId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //   begeniList.add(snapshot.getKey());
+                // getchildrencount için addlistenerforsinglevalueevent kullanılmalıdır
+                begenisayi.setText(snapshot.getChildrenCount()+" Like");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getArkadasTextler(){
+
+       // List<String> arkadasList=new ArrayList<>();
+
+        reference.child("Arkadaslar").child(otherId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //  arkadasList.add(snapshot.getKey());
+                userProfilTakipciText.setText(snapshot.getChildrenCount()+" Follower");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }
