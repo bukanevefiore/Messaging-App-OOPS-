@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oopsmelis.ChangeFragment;
 import com.example.oopsmelis.R;
-import com.example.oopsmelis.users.OtherProfileFragment;
+import com.example.oopsmelis.other.OtherProfileFragment;
 import com.example.oopsmelis.utilss.ProfileViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

@@ -47,6 +47,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/emailSignInEditText"
                     android:layout_width="match_parent"
+                    android:drawableLeft="@drawable/ic_baseline_account_box_24"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/transparent" />
 
@@ -63,6 +64,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwordSignInEditText"
                     android:layout_width="match_parent"
+                    android:inputType="numberPassword"
+                    android:drawableLeft="@drawable/ic_baseline_lock_open_24"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/transparent" />
 

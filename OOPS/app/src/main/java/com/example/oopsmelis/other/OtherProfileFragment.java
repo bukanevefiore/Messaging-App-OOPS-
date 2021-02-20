@@ -1,20 +1,19 @@
-package com.example.oopsmelis.users;
+package com.example.oopsmelis.other;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.oopsmelis.R;
+import com.example.oopsmelis.activity.ChatActivity;
 import com.example.oopsmelis.utilss.ProfileViewModel;
 import com.example.oopsmelis.utilss.ShowToastMessage;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,16 +21,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -202,6 +197,17 @@ public class OtherProfileFragment extends Fragment {
 
                     begen(userId,otherId);
                 }
+            }
+        });
+
+        // mesaj gönderme
+        userProfilMesajImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("username",userProfilArkadasEkleTextView.getText().toString());
+                intent.putExtra("id",otherId);
+                startActivity(intent);
             }
         });
 

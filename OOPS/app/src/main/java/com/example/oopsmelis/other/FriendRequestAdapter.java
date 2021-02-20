@@ -1,4 +1,4 @@
-package com.example.oopsmelis.users;
+package com.example.oopsmelis.other;
 
 import android.app.Activity;
 import android.content.Context;

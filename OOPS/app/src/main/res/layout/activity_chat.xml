@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="#050504"
+    android:layout_height="match_parent"
+    tools:context=".activity.ChatActivity">
+
+    <androidx.cardview.widget.CardView
+
+        xmlns:card_view = "http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_chat"
+        android:layout_width="match_parent"
+        card_view:cardElevation="20dp"
+        card_view:cardBackgroundColor="#EDB610"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="15dp"
+            >
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:id="@+id/backImage"
+                android:background="?attr/homeAsUpIndicator">
+
+            </ImageView>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:text="Name Surname"
+                android:gravity="center"
+                android:layout_marginRight="20dp"
+                android:textAlignment="textEnd"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="#000"
+                android:id="@+id/mesajUserNameText"
+                ></TextView>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/user"
+                android:layout_margin="5dp"
+                android:id="@+id/mesajUserImage"
+                android:layout_weight="1.1"></ImageView>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/chat_recycler_view"
+        android:layout_height="match_parent"
+        android:background="#050503"
+        android:layout_below="@+id/card_view_chat"
+        android:layout_above="@+id/cardview_chat_bottom">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.cardview.widget.CardView
+
+        android:layout_width="match_parent"
+        app:cardElevation="20dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/cardview_chat_bottom"
+        app:cardBackgroundColor="#EDB610"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="30dp"
+        android:layout_alignParentBottom="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/ic_baseline_emoji_emotions_24">
+
+            </ImageView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:hint="Write a message"
+                app:hintTextColor="#FFEB3B"
+                >
+
+                <!--this is the actual edit text which takes the input-->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mesajEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:minHeight="60dp"
+                    android:backgroundTint="@android:color/transparent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/okk"
+                android:id="@+id/mesajGonderButon"
+                app:backgroundTint="#FFC107"
+                app:rippleColor="@color/purple_700" />
+
+
+
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>
