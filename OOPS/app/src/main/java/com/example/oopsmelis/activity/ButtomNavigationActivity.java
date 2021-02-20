@@ -12,6 +12,8 @@ import com.example.oopsmelis.ui.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,10 @@ public class ButtomNavigationActivity extends AppCompatActivity {
     // henüz kullanıcı girişi olmamışsa uygulma kayıt ol ekranına yönlendirme
     FirebaseAuth auth;
     FirebaseUser user;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference reference;
+
+
     private ChangeFragment changeFragment;
 
     @Override
@@ -67,9 +73,14 @@ public class ButtomNavigationActivity extends AppCompatActivity {
                             changeFragment.change(new HomeFragment());
                             return true;
 
+                        case R.id.navigation_message:
+
+                            return true;
+
                         case R.id.navigation_dashboard:
                             changeFragment.change(new NotificationsFragment());
                             return true;
+
 
                         case R.id.navigation_profile:
                             changeFragment.change(new ProfileFragment());
@@ -79,6 +90,9 @@ public class ButtomNavigationActivity extends AppCompatActivity {
                             Intent intent=new Intent(getApplicationContext(),SignUpActivity.class);
                             startActivity(intent);
                             finish(); // signup activity e geçtikten sonra main activity e  gelmeyi engellemek için
+                            firebaseDatabase=FirebaseDatabase.getInstance();
+                            reference=firebaseDatabase.getReference().child("Kullanicilar");
+                            reference.child(user.getUid()).child("state").setValue(false);
                             return true;
 
                     }
@@ -114,6 +128,25 @@ public class ButtomNavigationActivity extends AppCompatActivity {
     public void tanimlamalar(){
         auth=FirebaseAuth.getInstance();
         user=auth.getCurrentUser();
+
+
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        reference=firebaseDatabase.getReference().child("Kullanicilar");
+        reference.child(user.getUid()).child("state").setValue(false);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        reference=firebaseDatabase.getReference().child("Kullanicilar");
+        reference.child(user.getUid()).child("state").setValue(true);
     }
 
     // kullanıcı varsa main activity de kalacak yoksa uygulama açıldığı gibi sign up activity açılacak
@@ -127,6 +160,9 @@ public class ButtomNavigationActivity extends AppCompatActivity {
         }else
         {
 
+            firebaseDatabase=FirebaseDatabase.getInstance();
+            reference=firebaseDatabase.getReference().child("Kullanicilar");
+            reference.child(user.getUid()).child("state").setValue(true);
         }
     }
 

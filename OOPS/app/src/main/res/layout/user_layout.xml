@@ -45,6 +45,17 @@
 
    </TextView>
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
+            android:id="@+id/user_state_img"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:layout_margin="25dp"
+            >
+
+        </de.hdodenhof.circleimageview.CircleImageView>
+
     </LinearLayout>
 
     </androidx.cardview.widget.CardView>

@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.oopsmelis.ChangeFragment;
 import com.example.oopsmelis.R;
-import com.example.oopsmelis.users.OtherProfileFragment;
 import com.example.oopsmelis.utilss.ProfileViewModel;
 import com.example.oopsmelis.utilss.RandomUserName;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -145,7 +144,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ChangeFragment changeFragment=new ChangeFragment(getContext());
-                changeFragment.change(new ArkadaslarFragment());
+                changeFragment.change(new FriendsFragment());
             }
         });
 

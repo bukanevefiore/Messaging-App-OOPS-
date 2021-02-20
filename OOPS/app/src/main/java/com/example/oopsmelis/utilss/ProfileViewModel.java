@@ -8,12 +8,22 @@ public class ProfileViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
     private String hakkinda, isim, resim, telefon;
+    private Boolean state;
 
-    public ProfileViewModel(String hakkinda, String isim, String resim, String telefon) {
+    public ProfileViewModel(String hakkinda, String isim, String resim, String telefon,Boolean state) {
         this.hakkinda = hakkinda;
         this.isim = isim;
         this.resim = resim;
         this.telefon = telefon;
+        this.state=state;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 
     public String getHakkinda() {

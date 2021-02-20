@@ -91,9 +91,14 @@ public class HomeFragment extends Fragment {
 
                             // kullanıcı isimleri null olmayanları listeye ekleyip home fragmentinde gösteriyoruz
                             Log.i("keyler",snapshot.getKey());
-                            // kullanıcılara ait tüm keyleri listemize ekliyoruz
-                            userKeysList.add(snapshot.getKey());
-                            homeUserAdapter.notifyDataSetChanged();  // adapteri anlık güncelleme
+
+                            //kullanıcı çoklamasını önlemek için if
+                            if(userKeysList.indexOf(snapshot.getKey())==-1) {
+                                // kullanıcılara ait tüm keyleri listemize ekliyoruz
+                                userKeysList.add(snapshot.getKey());
+                            }
+                                homeUserAdapter.notifyDataSetChanged();  // adapteri anlık güncelleme
+
                         }
                     }
 

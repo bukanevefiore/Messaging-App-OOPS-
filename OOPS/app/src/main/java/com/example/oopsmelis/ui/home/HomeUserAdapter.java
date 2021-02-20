@@ -62,7 +62,7 @@ public class HomeUserAdapter extends RecyclerView.Adapter<HomeUserAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView usernameTextView;
-        CircleImageView userImage;
+        CircleImageView userImage,user_state_img;
         LinearLayout userHomeLinearLayout;
 
         ViewHolder(View itemView){
@@ -70,6 +70,8 @@ public class HomeUserAdapter extends RecyclerView.Adapter<HomeUserAdapter.ViewHo
             usernameTextView=itemView.findViewById(R.id.usernameTextView);
             userImage=itemView.findViewById(R.id.userImage);
             userHomeLinearLayout=itemView.findViewById(R.id.userHomeLinearLayout);
+            user_state_img=itemView.findViewById(R.id.user_state_img);
+
 
         }
 
@@ -87,6 +89,14 @@ public class HomeUserAdapter extends RecyclerView.Adapter<HomeUserAdapter.ViewHo
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 ProfileViewModel kullanicilar=snapshot.getValue(ProfileViewModel.class);
+
+                Boolean stateUser=Boolean.parseBoolean(snapshot.child("state").getValue().toString());
+
+                if(stateUser==true){
+                    holder.user_state_img.setImageResource(R.drawable.yesil_circle);
+                }else{
+                    holder.user_state_img.setImageResource(R.drawable.red_circle);
+                }
 
                      Picasso.get().load(kullanicilar.getResim()).into(holder.userImage);
                      holder.usernameTextView.setText(kullanicilar.getIsim());

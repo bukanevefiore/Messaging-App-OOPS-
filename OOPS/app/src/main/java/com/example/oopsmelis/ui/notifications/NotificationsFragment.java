@@ -77,7 +77,10 @@ public class NotificationsFragment extends Fragment {
                     Log.i("istekler", snapshot.getKey());
                     kontrol = snapshot.child("tip").getValue().toString();
                     if (kontrol.equals("aldi")) {
-                        friend_req_key_list.add(snapshot.getKey());
+                        // bildirimde kullanıcı çoklamasına engel olmak için if
+                        if(friend_req_key_list.indexOf(snapshot.getKey())==-1) {
+                            friend_req_key_list.add(snapshot.getKey());
+                        }
                         adapter.notifyDataSetChanged();
                     }
 
