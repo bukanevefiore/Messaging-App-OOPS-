@@ -18,6 +18,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.IOException;
+
 public class SignInActivity extends AppCompatActivity {
 
     TextInputEditText emailSignInEditText,passwordSignInEditText;
@@ -77,27 +79,31 @@ public class SignInActivity extends AppCompatActivity {
     // sisteme giriş
     public void login(String email,String pass) {
 
-
-       auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-           @Override
-           public void onComplete(@NonNull Task<AuthResult> task) {
-
-               if (task.isSuccessful()) {
-                   Intent intent = new Intent(SignInActivity.this, ButtomNavigationActivity.class);
-                   startActivity(intent);
-                   finish();
+try {
+    auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        @Override
+        public void onComplete(@NonNull Task<AuthResult> task) {
 
 
-               }
+            if (task.isSuccessful()) {
 
-               else {
-                   Toast.makeText(getApplicationContext(), "There was a problem!!", Toast.LENGTH_LONG).show();
-
-               }
-           }
-       });
+                Log.i("hataaamı","hata");
+                Intent intent = new Intent(SignInActivity.this, ButtomNavigationActivity.class);
+                startActivity(intent);
+                finish();
 
 
+            } else {
+
+                Toast.makeText(getApplicationContext(), "There was a problem!!", Toast.LENGTH_LONG).show();
+
+            }
+        }
+    });
+
+}catch (Exception e){
+    Log.i("hatasignın", e.getMessage());
+}
 
 }
 }

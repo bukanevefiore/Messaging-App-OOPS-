@@ -79,7 +79,7 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="20dp"
                 android:id="@+id/signInGecis"
-                android:text=" Login to Existing Account">
+                android:text=" I Already Have An Account">
 
             </androidx.appcompat.widget.AppCompatCheckedTextView>
 
