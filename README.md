@@ -1,5 +1,4 @@
 Application Preview
-https://user-images.githubusercontent.com/59068120/110031830-70e36480-7d48-11eb-9ea6-04c078dd8220.mp4
 
 
 ![1](https://user-images.githubusercontent.com/59068120/110031995-af791f00-7d48-11eb-9360-a43302a96228.JPG)
